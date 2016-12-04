@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="../crs.xsd">
+	<soapenv:Header/>
+	<soapenv:Body>
+		<v1:GetUserData>
+			<v1:userName>?</v1:userName>
+			<v1:password>?</v1:password>
+		</v1:GetUserData>
+	</soapenv:Body>
+</soapenv:Envelope>

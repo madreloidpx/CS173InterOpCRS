@@ -1,0 +1,65 @@
+<definitions name="crs"
+	targetNamespace="crs.wsdl"
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="crs.wsdl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<types>
+		<schema targetNamespace="crs.xsd"
+			xmlns="http://www.w3.org/2000/10/XMLSchema">
+			
+			<element name="SomethingRequest">
+				<complexType>
+					<all>
+						<element name="something" type="string" />
+					</all>
+				</complexType>
+			</element>
+		
+			<element name="Something">
+				<complexType>
+					<all>
+						<element name="something" type="int" />
+					</all>
+				</complexType>
+			</element>
+		</schema>
+	</types>
+
+	<message name="GetSomethingRequest">
+		<part name="something1" type="xsd:string" />
+	</message>
+	
+	<message name="GetSomethingResponse">
+		<part name="something2" type="xsd:string" />
+	</message>
+   
+	<portType name="SamplePort">
+		<operation name="saySomething">
+			<input message="tns:GetSomethingRequest" />
+			<output message="tns:GetSomethingResponse" />
+		</operation>
+	</portType>
+
+	<binding name="SampleBind" type="tns:SamplePortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<operation name="saySomething">
+			<soap:operation soapAction="saySomething" />
+			
+			<input>
+				<soap:body use="literal" />
+			</input>
+			
+			<output>
+				<soap:body use="literal" />
+			</output>
+		</operation>
+	</binding>
+
+	<service name="crs_service">
+		<documentation>WSDL File for CRS for CS173</documentation>
+		<port binding="tns:SampleBind" name="SamplePort">
+			<soap:address location="link to somewhere idk what it means yet">
+		</port>
+	</service>
+</definitions>

@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="<ung link ng localhost I guess???>"
+	xmlns="same as the link sa targetNamespace"
+	elementFormDefault="qualified">
+	
+	<xs:element name="nameType">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="firstname" type="xs:string" />
+				<xs:element name="lastname" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="user">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="id" type="xs:int" />
+				<xs:element name="username" type="xs:string" />
+				<xs:element name="password" type="xs:string" />
+				<xs:element name="name" type="nameType" />
+				<xs:element name="birthday" type="xs:date" />
+				<xs:element name="sex" type="xs:string" />
+				<xs:element name="email" type="xs:string" />
+				<xs:element name="contact number" type="xs:int" />
+				<xs:element name="address" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="student_user">
+		<xs:complexType>
+			<xs:extension base="user">
+				<xs:sequence>
+					<xs:element name="bracket" type="xs:string" />
+					<xs:element name="student_no" type="xs:int" />
+					<xs:element name="enrollment_status" type="xs:string" />
+					<xs:element name="academic_status" type="xs:string" />
+					<xs:element ref="subject" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="staff_user">
+		<xs:complexType>
+			<xs:extension base="user">
+				<xs:sequence>
+					<xs:element ref="announcement" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="faculty_staff_user">
+		<xs:complexType>
+			<xs:extension base="staff_user">
+				<xs:sequence>
+					<xs:element ref="subject" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="admin_staff_user">
+		<xs:complexType>
+			<xs:extension base="staff_user">
+				<xs:sequence>
+					<xs:element name="level" type="xs:int" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="subject">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="id" type="xs:int" />
+				<xs:element name="course_title" type="xs:string" />
+				<xs:element name="course_description" type="xs:string" />
+				<xs:element name="schedule" type="xs:string" />
+				<xs:element name="room" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="announcement">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="id" type="xs:int" />
+				<xs:element name="author" type="xs:string" />
+				<xs:element name="title" type="xs:string" />
+				<xs:element name="date" type="xs:date" />
+				<xs:element name="level" type="xs:int" />
+				<xs:element name="content" type="xs:string" />
+			<xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>
