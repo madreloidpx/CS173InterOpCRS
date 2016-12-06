@@ -1,4 +1,5 @@
 # CS173InterOpCRS
-We need an architecture pa
-WSDL + SOAP + XML still not final
-We're gonna use C++ if we'd want to use SOAP and that's the easiest way we can interop.
+-We need an architecture pa
+-List of functions in list of functions text file.
+-We are gonna have to make a PHP server with the functions in the text file
+-(Aliya)Im still finishing the WSDL File so pls dont touch that.
