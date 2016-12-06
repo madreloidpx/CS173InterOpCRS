@@ -1,0 +1,66 @@
+,-----------------------,
+| Getters               |
+'-----------------------'
+
+getUserInfo()
+->userID
+<-name, sex, birthday, contact_no, email, address
+
+getStudentInfo()
+->studentID
+<-getUserInfo(), student_no, bracket, academic_status, enrollment_status
+
+getAcademicStatus()
+->studentID()
+<-academic_status
+
+getEnrollmentStatus()
+->studentID
+<-enrollment_status
+
+getStudentBracket()
+->studentID
+<-bracket
+
+getAnnouncement()
+->level
+<-title, author, date, content
+
+getGrades()
+->studentID, courseID
+
+,-----------------------,
+| Setters               |
+'-----------------------'
+
+newUser()
+->username, password
+
+setInfo()
+->name, sex, birthday, contact_no, email, address
+
+setStudentInfo()
+->setUserInfo(), student_no
+
+setAcademicStatus()
+->academic_status
+
+setEnslistmentStatus()
+->enlistmentStatus()
+
+setGrades()
+->studentID, courseID, teacherID
+
+setAdminLevel()
+->adminID, level
+
+,-----------------------,
+| Functions             |
+'-----------------------'
+
+login()
+->username, password
+<-boolean
+
+createAnnouncement()
+->title, level, author, date, content
