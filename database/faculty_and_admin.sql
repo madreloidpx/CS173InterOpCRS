@@ -31,46 +31,12 @@ CREATE TABLE admins(
 		REFERENCES staff(id)
 );
 
-CREATE TABLE students(
-	id INT AUTO_INCREMENT,
-	user_id INT,
-	academic_status TINYINT,
-	bracket VARCHAR(2),
-	student_number INT,
-	enrollment_status TINYINT,
-	PRIMARY KEY(id),
-	FOREIGN KEY(user_id)
-		REFERENCES users(id)
-);
-
 CREATE TABLE faculty(
 	id INT AUTO_INCREMENT,
 	staff_id INT,
 	PRIMARY KEY(id),
 	FOREIGN KEY(staff_id)
 		REFERENCES staff(id)
-);
-
-CREATE TABLE courses(
-	id INT AUTO_INCREMENT,
-	title VARCHAR(20),
-	schedule TEXT,
-	room VARCHAR(10),
-	faculty_id INT,
-	PRIMARY KEY(id),
-	FOREIGN KEY(faculty_id)
-		REFERENCES faculty(id)
-);
-
-CREATE TABLE course_student(
-	id INT AUTO_INCREMENT,
-	course_id INT,
-	student_id INT,
-	PRIMARY KEY(id),
-	FOREIGN KEY(course_id)
-		REFERENCES courses(id),
-	FOREIGN KEY(student_id)
-		REFERENCES students(id)
 );
 
 CREATE TABLE announcements(
@@ -83,20 +49,4 @@ CREATE TABLE announcements(
 	PRIMARY KEY(id),
 	FOREIGN KEY(author_id)
 		REFERENCES staff(id)
-);
-
-CREATE TABLE grades(
-	id INT AUTO_INCREMENT,
-	student_id INT,
-	course_id INT,
-	faculty_id INT,
-	status TINYINT,
-	semester VARCHAR(20),
-	PRIMARY KEY(id),
-	FOREIGN KEY(faculty_id)
-		REFERENCES faculty(id),
-	FOREIGN KEY(course_id)
-		REFERENCES courses(id),
-	FOREIGN KEY(student_id)
-		REFERENCES students(id)
 );
