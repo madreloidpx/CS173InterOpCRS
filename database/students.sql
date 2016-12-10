@@ -10,10 +10,11 @@ CREATE TABLE students(
 	contact INT,
 	academic_status TINYINT,
 	bracket VARCHAR(2),
-	student_number INT,
+	student_number CHAR(10),
 	enrollment_status TINYINT,
 	approval_status BOOLEAN,
 	UNIQUE(username),
+	UNIQUE(student_number),
 	PRIMARY KEY(id),
 	INDEX name_index(firstname,lastname),
 	INDEX username_index(username)
