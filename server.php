@@ -19,6 +19,12 @@
 			case 'student':
 				$query = "UPDATE students SET lastname='$lastname', firstname='$firstname', email='$email', sex='$sex', address='$address', contact='$contact' WHERE username='$username'";
 			break;
+			case 'staff':
+				$query = "UPDATE staff SET lastname='$lastname', firstname='$firstname', email='$email', sex='$sex', address='$address', contact='$contact' WHERE username='$username'";
+			break;
+			default:
+				$query=NULL;
+			break;
 		}
 		if($conn){
 			if(mysql_select_db("crs", $conn)){
@@ -41,19 +47,55 @@
 		return FALSE;
 	}
 	
-	function setAcademicStatus($symbol){}
+	function setAcademicStatus($username){
+		$conn = mysql_pconnect("localhost", "root", "");
+		$query = "UPDATE students SET academic_status='$academic_status' WHERE username='$username'";
+		if($conn){
+			if(mysql_select_db("crs", $conn)){
+				mysql_query($query);
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
 	
-	function setEnlistmentStatus($symbol){}
+	function setEnlistmentStatus($username){
+		$conn = mysql_pconnect("localhost", "root", "");
+		$query = "UPDATE students SET enlistment_status='$enlistment_status' WHERE username='$username'";
+		if($conn){
+			if(mysql_select_db("crs", $conn)){
+				mysql_query($query);
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
 	
 	function setGrades($symbol){}
 	
-	function setAdminLevel($symbol){}
+	function setAdminLevel($username, $position_level){
+		$conn = mysql_pconnect("localhost", "root", "");
+		$query = "UPDATE staff SET position_level='$position_level' WHERE username='$username'";
+		if($conn){
+			if(mysql_select_db("crs", $conn)){
+				mysql_query($query);
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
 	
 	function newUser($username, $password, $type){
 		$conn = mysql_pconnect("localhost", "root", "");
 		switch($type){
 			case "student":
 				$query = "INSERT INTO students(username, password, lastname, firstname, email, sex, address, contact, academic_status, bracket, student_number, enrollment_status, approval_status) VALUES ('$username', '$password', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, 0)";
+			break;
+			case "staff":
+				$query = "INSERT INTO staff(username, password, lastname, firstname, email, sex, address, contact, position_level, approval_status) VALUES  ('$username', '$password', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0)";
+			break;
+			default:
+				$query=NULL;
 			break;
 		}
 		if($conn){
@@ -75,6 +117,9 @@
 	
 	$server->register("setInfo", array('username' => 'xsd:string', 'type' => 'xsd:string', 'lastname' => 'xsd:string', 'firstname' => 'xsd:string', 'email' => 'xsd:string', 'sex' => 'xsd:string', 'address' => 'xsd:string', 'contact' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setInfo');
 	$server->register("setStudentInfo", array('username' => 'xsd:string', 'bracket' => 'xsd:string', 'student_number' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setStudentInfo');
+	$server->register("setAcademicStatus", array('username' => 'xsd:string', 'academic_status' => 'xsd:int'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setAcademicStatus');
+	$server->register("setEnlistmentStatus", array('username' => 'xsd:string', 'enlistment_status' => 'xsd:int'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setEnlistmentStatus');
+	$server->register("setAdminLevel", array('username' => 'xsd:string', 'position_level' => 'xsd:int'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setAdminLevel');
 	$server->register("newUser", array('username' => 'xsd:string', 'password' => 'xsd:string', 'type' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#newUser');
 	
 	$HTTP_RAW_POST_DATA = isset($HTTP_RAW_POST_DATA)? $HTTP_RAW_POST_DATA : '';
