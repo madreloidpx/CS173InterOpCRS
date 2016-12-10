@@ -1,4 +1,4 @@
-CREATE TABLE users(
+CREATE TABLE staff(
 	id INT AUTO_INCREMENT,
 	username VARCHAR(20),
 	password VARCHAR(20),
@@ -8,18 +8,11 @@ CREATE TABLE users(
 	sex CHAR(1),
 	address TEXT,
 	contact INT,
+	approval_status BOOLEAN,
 	UNIQUE(username),
 	PRIMARY KEY(id),
 	INDEX name_index(firstname,lastname),
 	INDEX username_index(username)
-);
-
-CREATE TABLE staff(
-	id INT AUTO_INCREMENT,
-	user_id INT,
-	PRIMARY KEY(id),
-	FOREIGN KEY(user_id)
-		REFERENCES users(id)
 );
 
 CREATE TABLE admins(
