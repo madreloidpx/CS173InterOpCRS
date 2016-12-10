@@ -11,4 +11,7 @@
 	
 	$return = $c->call('setStudentInfo', array('username' => 'default', 'bracket' => 'E', 'student_number' => '201696969'));
 	echo "The result is '$return' ";
+	
+	$return = $c->call('login', array('username' => 'default', 'password' => 'password', 'type' => 'student'));
+	echo "Logged in = '$return'";
 ?>

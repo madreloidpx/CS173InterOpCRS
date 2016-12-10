@@ -71,7 +71,7 @@
 		return FALSE;
 	}
 	
-	function setGrades($symbol){}
+	function setGrades($course, $username){}
 	
 	function setAdminLevel($username, $position_level){
 		$conn = mysql_pconnect("localhost", "root", "");
@@ -107,9 +107,37 @@
 		return FALSE;
 	}
 	
-	function login($symbol){}
+	function login($username, $password, $type){
+		$conn = mysql_pconnect("localhost", "root", "");
+		switch($type){
+			case "student":
+				$query = "SELECT * FROM students where username='$username' AND password='$password'";
+			break;
+			case "staff":
+				$query = "SELECT * FROM staff where username='$username' AND password='$password'";
+			break;
+		}
+		if($conn){
+			if(mysql_select_db("crs", $conn)){
+				$result = mysql_query($query);
+				$count = mysql_num_rows($result);
+				return $count;
+			}
+		}
+		return FALSE;
+	}
 	
-	function createAnnouncement($symbol){}
+	function createAnnouncement($username, $level, $title, $content){
+		$conn = mysql_pconnect("localhost", "root", "");
+		$query = "INSERT INTO announcements(author_id, title, announcement_level, content, date_created) VALUES (( SELECT id FROM staff where username='sensei' ), '$title', '$level', '$content', CURRENT_TIMESTAMP)";
+		if($conn){
+			if(mysql_select_db("crs", $conn)){
+				mysql_query($query);
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
 
 	require('lib/nusoap.php');
 	$server = new soap_server();
@@ -121,6 +149,8 @@
 	$server->register("setEnlistmentStatus", array('username' => 'xsd:string', 'enlistment_status' => 'xsd:int'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setEnlistmentStatus');
 	$server->register("setAdminLevel", array('username' => 'xsd:string', 'position_level' => 'xsd:int'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setAdminLevel');
 	$server->register("newUser", array('username' => 'xsd:string', 'password' => 'xsd:string', 'type' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#newUser');
+	$server->register("login", array('username' => 'xsd:string', 'password' => 'xsd:string', 'type' => 'xsd:string'), array('return' => 'xsd:int'), 'urn:server', 'urn:server#login');
+	$server->register("createAnnouncement", array('username' => 'xsd:string', 'level' => 'xsd:int', 'title' => 'xsd:string', 'content' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#createAnnouncement');
 	
 	$HTTP_RAW_POST_DATA = isset($HTTP_RAW_POST_DATA)? $HTTP_RAW_POST_DATA : '';
 	$server->service(file_get_contents("php://input"));

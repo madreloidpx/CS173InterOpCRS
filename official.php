@@ -12,4 +12,6 @@
 	$return = $c->call('setAdminLevel', array('username' => 'p0tad1lawan', 'position_level' => '4'));
 	echo "The result is '$return' ";
 	
+	$return = $c->call('login', array('username' => 'default', 'password' => 'password', 'type' => 'staff'));
+	echo "Logged in = '$return'";
 ?>

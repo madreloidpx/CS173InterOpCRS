@@ -12,4 +12,8 @@
 	$return = $c->call('setAdminLevel', array('username' => 'sensei', 'position_level' => '1'));
 	echo "The result is '$return' ";
 	
+	$return = $c->call('login', array('username' => 'default', 'password' => 'password', 'type' => 'staff'));
+	echo "Logged in = '$return'";
+	
+	$return = $c->call('createAnnouncement', array('username' => 'sensei', 'level' => '1', 'title' => 'I wanna be a great teacher...', 'content' => '...but the monsters sometimes attack me hard. I am getting crazy at this rate. SHUT UP! SHUT UP! SHUT UP! Oh no.'));
 ?>
