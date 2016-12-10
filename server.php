@@ -71,7 +71,17 @@
 		return FALSE;
 	}
 	
-	function setGrades($course, $username){}
+	function setGrades($course, $username, $status, $sem){
+		$conn = mysql_pconnect("localhost", "root", "");
+		$query = "INSERT INTO grades(student_id, course_id, status, semester) VALUES ( ( SELECT id from students where username='$username'), ( SELECT id from courses where title='$course'), '$status', '$sem')";
+		if($conn){
+			if(mysql_select_db("crs", $conn)){
+				mysql_query($query);
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
 	
 	function setAdminLevel($username, $position_level){
 		$conn = mysql_pconnect("localhost", "root", "");
@@ -138,6 +148,18 @@
 		}
 		return FALSE;
 	}
+	
+	function createCourse($title, $room, $username){
+		$conn = mysql_pconnect("localhost", "root", "");
+		$query = "INSERT INTO courses(title, room, faculty_id) VALUES ('$title', '$room', ( SELECT id from staff where username='$username' ) )";
+		if($conn){
+			if(mysql_select_db("crs", $conn)){
+				mysql_query($query);
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
 
 	require('lib/nusoap.php');
 	$server = new soap_server();
@@ -147,10 +169,12 @@
 	$server->register("setStudentInfo", array('username' => 'xsd:string', 'bracket' => 'xsd:string', 'student_number' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setStudentInfo');
 	$server->register("setAcademicStatus", array('username' => 'xsd:string', 'academic_status' => 'xsd:int'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setAcademicStatus');
 	$server->register("setEnlistmentStatus", array('username' => 'xsd:string', 'enlistment_status' => 'xsd:int'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setEnlistmentStatus');
+	$server->register("setGrades", array('course' => 'xsd:string', 'username' => 'xsd:string', 'status' => 'xsd:int', 'sem' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setGrades');
 	$server->register("setAdminLevel", array('username' => 'xsd:string', 'position_level' => 'xsd:int'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setAdminLevel');
 	$server->register("newUser", array('username' => 'xsd:string', 'password' => 'xsd:string', 'type' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#newUser');
 	$server->register("login", array('username' => 'xsd:string', 'password' => 'xsd:string', 'type' => 'xsd:string'), array('return' => 'xsd:int'), 'urn:server', 'urn:server#login');
 	$server->register("createAnnouncement", array('username' => 'xsd:string', 'level' => 'xsd:int', 'title' => 'xsd:string', 'content' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#createAnnouncement');
+	$server->register("createCourse", array('title' => 'xsd:string', 'room' => 'xsd:string', 'username' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#createCourse');
 	
 	$HTTP_RAW_POST_DATA = isset($HTTP_RAW_POST_DATA)? $HTTP_RAW_POST_DATA : '';
 	$server->service(file_get_contents("php://input"));
