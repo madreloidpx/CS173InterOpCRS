@@ -33,6 +33,9 @@ getGrades()
 | Setters               |
 '-----------------------'
 
+newUser()
+->username, password
+
 setInfo()
 ->name, sex, birthday, contact_no, email, address
 
@@ -54,9 +57,6 @@ setAdminLevel()
 ,-----------------------,
 | Functions             |
 '-----------------------'
-
-newUser()
-->username, password
 
 login()
 ->username, password
