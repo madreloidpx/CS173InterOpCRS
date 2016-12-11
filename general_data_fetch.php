@@ -57,34 +57,9 @@ array(
  'email'=>array('name'=>'email','type'=>'xsd:string'),
  'sex'=>array('name'=>'sex','type'=>'xsd:string'),
  'address'=>array('name'=>'address','type'=>'xsd:string'),
- 'contact'=>array('name'=>'contact','type'=>'xsd:int')
- )
-);
-
-#Admin
-$server->wsdl->addComplexType(
-'admin_array', #rename
-'complexType',
-'struct',
-'all',
-'',
-array(
- 'id'=>array('name'=>'id','type'=>'xsd:int'),
- 'staff_id'=>array('name'=>'staff_id','type'=>'xsd:int'),
+ 'contact'=>array('name'=>'contact','type'=>'xsd:int'),
  'position_level'=>array('name'=>'position_level','type'=>'xsd:unsignedByte'),
- )
-);
-
-#Faculty
-$server->wsdl->addComplexType(
-'faculty_array', #rename
-'complexType',
-'struct',
-'all',
-'',
-array(
- 'id'=>array('name'=>'id','type'=>'xsd:int'),
- 'staff_id'=>array('name'=>'staff_id','type'=>'xsd:int'),
+ 'approval_status'=>array('name'=>'approval_status','type'=>'xsd:unsignedByte')
  )
 );
 
@@ -105,6 +80,22 @@ array(
  )
 );
 
+#Consultation Schedules
+$server->wsdl->addComplexType(
+'consultation_schedules_array', #rename
+'complexType',
+'struct',
+'all',
+'',
+array(
+ 'id'=>array('name'=>'id','type'=>'xsd:int'),
+ 'faculty_id'=>array('name'=>'faculty_id','type'=>'xsd:int'),
+ 'day_of_week'=>array('name'=>'day_of_week','type'=>'xsd:string'),
+ 'schedule_start'=>array('name'=>'schedule_start','type'=>'xsd:time'),
+ 'schedule_end'=>array('name'=>'schedule_end','type'=>'xsd:time')
+ )
+);
+
 #Courses
 $server->wsdl->addComplexType(
 'courses_array', #rename
@@ -115,8 +106,7 @@ $server->wsdl->addComplexType(
 array(
  'id'=>array('name'=>'id','type'=>'xsd:int'),
  'title'=>array('name'=>'title','type'=>'xsd:string'),
- 'room'=>array('name'=>'room','type'=>'xsd:string'),
- 'faculty_id'=>array('name'=>'faculty_id','type'=>'xsd:int')
+ 'room'=>array('name'=>'room','type'=>'xsd:string')
  )
 );
 
@@ -130,7 +120,23 @@ $server->wsdl->addComplexType(
 array(
  'id'=>array('name'=>'id','type'=>'xsd:int'),
  'course_id'=>array('name'=>'course_id','type'=>'xsd:int'),
- 'student_id'=>array('name'=>'student_id','type'=>'xsd:int')
+ 'student_id'=>array('name'=>'student_id','type'=>'xsd:int'),
+ 'student_enrolled'=>array('name'=>'student_enrolled','type'=>'xsd:unsignedByte')
+ )
+);
+
+#Course and Faculty
+$server->wsdl->addComplexType(
+'courses_faculty_array', #rename
+'complexType',
+'struct',
+'all',
+'',
+array(
+ 'id'=>array('name'=>'id','type'=>'xsd:int'),
+ 'course_id'=>array('name'=>'course_id','type'=>'xsd:int'),
+ 'faculty_id'=>array('name'=>'faculty_id','type'=>'xsd:int'),
+ 'faculty_enrolled'=>array('name'=>'faculty_enrolled','type'=>'xsd:unsignedByte')
  )
 );
 

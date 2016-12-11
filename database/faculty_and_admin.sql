@@ -27,3 +27,14 @@ CREATE TABLE announcements(
 	FOREIGN KEY(author_id)
 		REFERENCES staff(id)
 );
+
+CREATE TABLE consultation_schedules(
+	id INT AUTO_INCREMENT,
+	faculty_id INT,
+	day_of_week CHAR(1),
+	schedule_start TIME,
+	schedule_end TIME,
+	PRIMARY KEY(id),
+	FOREIGN KEY(faculty_id)
+		REFERENCES staff(id)
+);
