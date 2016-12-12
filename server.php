@@ -32,6 +32,8 @@
 		return $solutions;
 	}
 	
+	function getStaffInfo(){}
+	
 	function getAcademicStatus($userID){
 		$conn=mysqli_connect('localhost','root','');
 		$query = "SELECT academic_status from students.students WHERE students.students.id='$userID'";
@@ -99,6 +101,12 @@
 	}
 	
 	function getEnlistedCourse(){}
+	
+	function getClassList(){}
+	
+	function getFacultySchedule(){}
+	
+	function getRoomList(){}
 	
 	function setInfo($username, $type, $lastname, $firstname, $email, $sex, $address, $contact, $department){
 		$conn = mysql_pconnect("localhost", "root", "");
@@ -305,6 +313,8 @@
 	}
 	
 	function enlistCourse(){}
+	
+	function assessSchedule(){}
 
 	require('lib/nusoap.php');
 	$server = new soap_server();
