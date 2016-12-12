@@ -95,6 +95,30 @@
 		return FALSE;
 	}
 	
+	function deleteAnnouncement($announcement_id){
+		$conn = mysql_pconnect("localhost", "root", "");
+		$query = "DELETE FROM announcements WHERE id='$announcement_id'";
+		if($conn){
+			if(mysql_select_db("crs", $conn)){
+				mysql_query($query);
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
+	
+	function deleteCourse($course_id){
+		$conn = mysql_pconnect("localhost", "root", "");
+		$query = "DELETE FROM courses WHERE id='$course_id'";
+		if($conn){
+			if(mysql_select_db("crs", $conn)){
+				mysql_query($query);
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
+	
 	function newUser($username, $password, $type){
 		$conn = mysql_pconnect("localhost", "root", "");
 		switch($type){
@@ -160,6 +184,36 @@
 		}
 		return FALSE;
 	}
+	
+	function approveAccount($username_client, $username_approve, $type_approve){
+		$conn = mysql_pconnect("localhost", "root", "");
+		$getLevelApprove = "SELECT position_level from staff where username='$username_approve'";
+		$getLevelClient = "SELECT position_level from staff where username='$username_client'";
+		if($conn){
+			if(mysql_select_db("crs", $conn)){
+				$clientLevel = mysql_query($query);
+			}
+		}
+		if($type_approve == 'student'){
+			$query = "UPDATE students SET approval_status=TRUE WHERE username='$username_approve'";
+		}else if($type_approve == 'staff'){
+			if(mysql_select_db("crs", $conn)){
+				$approveLevel = mysql_query($getLevelApprove);
+			}
+			if($approveLevel < $clientLevel or $clientLevel == 4){
+				$query = "UPDATE staff SET approval_status=TRUE WHERE username='$username_approve'";
+			}else{
+				$query = "";
+			}
+		}
+		if($conn){
+			if(mysql_select_db("crs", $conn)){
+				mysql_query($query);
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
 
 	require('lib/nusoap.php');
 	$server = new soap_server();
@@ -171,10 +225,14 @@
 	$server->register("setEnlistmentStatus", array('username' => 'xsd:string', 'enlistment_status' => 'xsd:int'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setEnlistmentStatus');
 	$server->register("setGrades", array('course' => 'xsd:string', 'username' => 'xsd:string', 'status' => 'xsd:int', 'sem' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setGrades');
 	$server->register("setAdminLevel", array('username' => 'xsd:string', 'position_level' => 'xsd:int'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setAdminLevel');
+	$server->register("deleteAnnouncement", array('announcement_id' => 'xsd:int'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#deleteAnnouncement');
+	$server->register("deleteCourse", array('course_id' => 'xsd:int'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#deleteCourse');
 	$server->register("newUser", array('username' => 'xsd:string', 'password' => 'xsd:string', 'type' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#newUser');
 	$server->register("login", array('username' => 'xsd:string', 'password' => 'xsd:string', 'type' => 'xsd:string'), array('return' => 'xsd:int'), 'urn:server', 'urn:server#login');
 	$server->register("createAnnouncement", array('username' => 'xsd:string', 'level' => 'xsd:int', 'title' => 'xsd:string', 'content' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#createAnnouncement');
 	$server->register("createCourse", array('title' => 'xsd:string', 'room' => 'xsd:string', 'username' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#createCourse');
+	$server->register("approveAccount", array('username_client' => 'xsd:string', 'username_approve' => 'xsd:string', 'type_client' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#approveAccount');
+	
 	
 	$HTTP_RAW_POST_DATA = isset($HTTP_RAW_POST_DATA)? $HTTP_RAW_POST_DATA : '';
 	$server->service(file_get_contents("php://input"));
