@@ -248,6 +248,24 @@
 
 	$server->wsdl->addComplexType('announcements_array','complexType','struct','all','',array('id'=>array('name'=>'id','type'=>'xsd:int'),'author_id'=>array('name'=>'author_id','type'=>'xsd:int'),'title'=>array('name'=>'title','type'=>'xsd:string'),'announcement_level'=>array('name'=>'announcement_level','type'=>'xsd:unsignedByte'),'content'=>array('name'=>'content','type'=>'xsd:string'),'date_created'=>array('name'=>'date_created','type'=>'xsd:date')));
 	$server->wsdl->addComplexType('announcements_array_php','complexType','array','all','SOAP-ENC:Array',array(),array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:announcements_array[]')),'tns:announcements_array');
+	
+	$server->wsdl->addComplexType('staff_array','complexType','struct','all','',array('id'=>array('name'=>'id','type'=>'xsd:int'),'username'=>array('name'=>'username','type'=>'xsd:string'),'password'=>array('name'=>'password','type'=>'xsd:string'),'lastname'=>array('name'=>'lastname','type'=>'xsd:string'),'firstname'=>array('name'=>'firstname','type'=>'xsd:string'),'email'=>array('name'=>'email','type'=>'xsd:string'),'sex'=>array('name'=>'sex','type'=>'xsd:string'),'address'=>array('name'=>'address','type'=>'xsd:string'),'contact'=>array('name'=>'contact','type'=>'xsd:int'),'position_level'=>array('name'=>'position_level','type'=>'xsd:unsignedByte'),'approval_status'=>array('name'=>'approval_status','type'=>'xsd:unsignedByte')));
+	$server->wsdl->addComplexType('staff_array_php','complexType','array','all','SOAP-ENC:Array',array(),array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:staff_array[]')),'tns:staff_array');
+
+	$server->wsdl->addComplexType('consultation_schedules_array', 'complexType','struct','all','',array('id'=>array('name'=>'id','type'=>'xsd:int'),'faculty_id'=>array('name'=>'faculty_id','type'=>'xsd:int'),'day_of_week'=>array('name'=>'day_of_week','type'=>'xsd:string'),'schedule_start'=>array('name'=>'schedule_start','type'=>'xsd:time'),'schedule_end'=>array('name'=>'schedule_end','type'=>'xsd:time')));
+	$server->wsdl->addComplexType('consultation_schedules_array_php','complexType','array','all','SOAP-ENC:Array',array(),array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:consultation_schedules_array[]')),'tns:consultation_schedules_array');
+
+	$server->wsdl->addComplexType('courses_array', 'complexType','struct','all','',array('id'=>array('name'=>'id','type'=>'xsd:int'),'title'=>array('name'=>'title','type'=>'xsd:string'),'room'=>array('name'=>'room','type'=>'xsd:string')));
+	$server->wsdl->addComplexType('courses_array_php','complexType','array','all','SOAP-ENC:Array',array(),array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:courses_array[]')),'tns:courses_array');
+
+	$server->wsdl->addComplexType('courses_students_array','complexType','struct','all','',array('id'=>array('name'=>'id','type'=>'xsd:int'),'course_id'=>array('name'=>'course_id','type'=>'xsd:int'),'student_id'=>array('name'=>'student_id','type'=>'xsd:int'),'student_enrolled'=>array('name'=>'student_enrolled','type'=>'xsd:unsignedByte')));
+	$server->wsdl->addComplexType('courses_students_array_php','complexType','array','all','SOAP-ENC:Array',array(),array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:courses_students_array[]')),'tns:courses_students_array');
+
+	$server->wsdl->addComplexType('courses_faculty_array','complexType','struct','all','',array('id'=>array('name'=>'id','type'=>'xsd:int'),'course_id'=>array('name'=>'course_id','type'=>'xsd:int'),'faculty_id'=>array('name'=>'faculty_id','type'=>'xsd:int'),'faculty_enrolled'=>array('name'=>'faculty_enrolled','type'=>'xsd:unsignedByte')));
+	$server->wsdl->addComplexType('courses_faculty_array_php','complexType','array','all','SOAP-ENC:Array',array(),array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:courses_faculty_array[]')),'tns:courses_faculty_array');
+
+	$server->wsdl->addComplexType('schedules_array', 'complexType','struct','all','',array('id'=>array('name'=>'id','type'=>'xsd:int'),'course_id'=>array('name'=>'course_id','type'=>'xsd:int'),'day_of_week'=>array('name'=>'day_of_week','type'=>'xsd:string'),'schedule_start'=>array('name'=>'schedule_start','type'=>'xsd:time'),'schedule_end'=>array('name'=>'schedule_end','type'=>'xsd:time')));
+	$server->wsdl->addComplexType('schedules_array_php','complexType','array','all','SOAP-ENC:Array',array(),array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:schedules_array[]')),'tns:schedules_array');
 		
 	$server->register("getUserInfo",array('userID' => 'xsd:int', 'type'=>'xsd:string'),array('return' => 'tns:students_array_php'),'urn:server','urn:server#getUserInfo');
 	$server->register("getStudentInfo",array('userID' => 'xsd:int'),array('return' => 'tns:students_array_php'),'urn:server','urn:server#getStudentInfo');
