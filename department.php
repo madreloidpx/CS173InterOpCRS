@@ -14,4 +14,7 @@
 	
 	$return = $c->call('login', array('username' => 'default', 'password' => 'password', 'type' => 'staff'));
 	echo "Logged in = '$return'";
+	
+	$return = $c->call('approveAccount', array('username_client' => 'depaato', 'username_approve' => 'sensei', 'type_approve' => 'staff'));
+	echo "The result is '$return'"
 ?>
