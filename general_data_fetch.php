@@ -17,10 +17,12 @@ array(
  'email'=>array('name'=>'email','type'=>'xsd:string'),
  'sex'=>array('name'=>'sex','type'=>'xsd:string'),
  'address'=>array('name'=>'address','type'=>'xsd:string'),
+ 'dorm'=>array('name'=>'dorm','type'=>'xsd:unsignedByte'),
  'contact'=>array('name'=>'contact','type'=>'xsd:int'),
  'academic_status'=>array('name'=>'academic_status','type'=>'xsd:unsignedByte'),
  'bracket'=>array('name'=>'bracket','type'=>'xsd:string'),
  'student_number'=>array('name'=>'student_number','type'=>'xsd:string'),
+ 'department'=>array('name'=>'department','type'=>'xsd:string'),
  'enrollment_status'=>array('name'=>'enrollment_status','type'=>'xsd:unsignedByte'),
  'approval_status'=>array('name'=>'approval_status','type'=>'xsd:unsignedByte')
  )
@@ -58,6 +60,7 @@ array(
  'sex'=>array('name'=>'sex','type'=>'xsd:string'),
  'address'=>array('name'=>'address','type'=>'xsd:string'),
  'contact'=>array('name'=>'contact','type'=>'xsd:int'),
+ 'department'=>array('name'=>'department','type'=>'xsd:string'),
  'position_level'=>array('name'=>'position_level','type'=>'xsd:unsignedByte'),
  'approval_status'=>array('name'=>'approval_status','type'=>'xsd:unsignedByte')
  )
@@ -106,7 +109,9 @@ $server->wsdl->addComplexType(
 array(
  'id'=>array('name'=>'id','type'=>'xsd:int'),
  'title'=>array('name'=>'title','type'=>'xsd:string'),
- 'room'=>array('name'=>'room','type'=>'xsd:string')
+ 'room'=>array('name'=>'room','type'=>'xsd:string'),
+ 'units'=>array('name'=>'units','type'=>'xsd:int'),
+ 'academic_year'=>array('name'=>'academic_year','type'=>'xsd:int')
  )
 );
 

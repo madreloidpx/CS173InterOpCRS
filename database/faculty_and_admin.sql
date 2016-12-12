@@ -8,6 +8,7 @@ CREATE TABLE staff(
 	sex CHAR(1),
 	address TEXT,
 	contact INT,
+	department VARCHAR(30),
 	position_level TINYINT,
 	approval_status BOOLEAN,
 	UNIQUE(username),
