@@ -111,7 +111,7 @@
 	
 	function getClassList(){
 		$conn=mysqli_connect('localhost','root','');
-		$query = "SELECT title, room, units, academic_year, sem from courses.courses WHERE courses.courses.id='$courseID'";
+		$query = "SELECT title, room, units, academic_year, sem, slots, slots_taken from courses.courses ORDER BY title";
 		$result = mysqli_query($conn,$query);
 		$solutions = array();
 		while($row = mysqli_fetch_assoc($result)) {
@@ -120,9 +120,9 @@
 		return $solutions;	
 	}
 	
-	function getFacultySchedule(){
+	function getFacultySchedule($userID){
 		$conn=mysqli_connect('localhost','root','');
-		$query = "SELECT title, room, units, academic_year, sem from courses.courses WHERE courses.courses.id='$courseID'";
+		$query = "SELECT title, room, academic_year, sem, faculty_enrolled, day_of_week, schedule_start, schedule_end from courses.courses JOIN courses.course_faculty ON courses.courses.id=courses.course_faculty.course_id JOIN faculty_and_admin.staff ON faculty_and_admin.staff.id=courses.course_faculty.faculty_id JOIN courses.course_schedules ON courses.courses.id=courses.course_schedules.course_id WHERE faculty_and_admin.staff.id='$userID' ORDER BY title";
 		$result = mysqli_query($conn,$query);
 		$solutions = array();
 		while($row = mysqli_fetch_assoc($result)) {
@@ -133,7 +133,7 @@
 	
 	function getRoomList(){
 		$conn=mysqli_connect('localhost','root','');
-		$query = "SELECT title, room, units, academic_year, sem from courses.courses WHERE courses.courses.id='$courseID'";
+		$query = "SELECT title, room, units, academic_year, sem from courses.courses ORDER BY room";
 		$result = mysqli_query($conn,$query);
 		$solutions = array();
 		while($row = mysqli_fetch_assoc($result)) {
@@ -346,8 +346,11 @@
 		return FALSE;
 	}
 	
-	function enlistCourse(){
-	
+	function enlistCourse($userID, $courseID){
+		$conn=mysqli_connect('localhost','root','');
+		$query = "INSERT INTO courses.course_student(student_id,course_id) VALUES ('$userID','$courseID')";
+		$result=mysqli_query($conn,$query);
+		return $result;
 	}
 
 	require('lib/nusoap.php');
@@ -381,7 +384,10 @@
 
 	$server->wsdl->addComplexType('schedules_array', 'complexType','struct','all','',array('id'=>array('name'=>'id','type'=>'xsd:int'),'course_id'=>array('name'=>'course_id','type'=>'xsd:int'),'day_of_week'=>array('name'=>'day_of_week','type'=>'xsd:string'),'schedule_start'=>array('name'=>'schedule_start','type'=>'xsd:time'),'schedule_end'=>array('name'=>'schedule_end','type'=>'xsd:time')));
 	$server->wsdl->addComplexType('schedules_array_php','complexType','array','all','SOAP-ENC:Array',array(),array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:schedules_array[]')),'tns:schedules_array');
-		
+
+	$server->wsdl->addComplexType('faculty_schedules_array', 'complexType','struct','all','',array('id'=>array('name'=>'id','type'=>'xsd:int'),'title'=>array('name'=>'title','type'=>'xsd:string'),'room'=>array('name'=>'room','type'=>'xsd:string'), 'units'=>array('name'=>'units','type'=>'xsd:int'), 'academic_year'=>array('name'=>'academic_year','type'=>'xsd:int'),'sem'=>array('name'=>'sem','type'=>'xsd:int'),'slots'=>array('name'=>'slots','type'=>'xsd:int'),'slots_taken'=>array('name'=>'slots_taken','type'=>'xsd:int'),'day_of_week'=>array('name'=>'day_of_week','type'=>'xsd:string'),'schedule_start'=>array('name'=>'schedule_start','type'=>'xsd:time'),'schedule_end'=>array('name'=>'schedule_end','type'=>'xsd:time')));
+	$server->wsdl->addComplexType('faculty_schedules_array_php','complexType','array','all','SOAP-ENC:Array',array(),array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:faculty_schedules_array[]')),'tns:faculty_schedules_array');
+	
 	$server->register("getUserInfo",array('userID' => 'xsd:int', 'type'=>'xsd:string'),array('return' => 'tns:students_array_php'),'urn:server','urn:server#getUserInfo');
 	$server->register("getStudentInfo",array('userID' => 'xsd:int'),array('return' => 'tns:students_array_php'),'urn:server','urn:server#getStudentInfo');
 	$server->register("getAcademicStatus",array('userID' => 'xsd:int'),array('return' => 'tns:students_array_php'),'urn:server','urn:server#getAcademicStatus');
@@ -389,7 +395,12 @@
 	$server->register("getStudentBracket",array('userID' => 'xsd:int'),array('return' => 'tns:students_array_php'),'urn:server','urn:server#getStudentBracket');
 	$server->register("getAnnouncement",array(''),array('return' => 'tns:announcements_array_php'),'urn:server','urn:server#getAnnouncement');
 	$server->register("getGrades",array('userID' => 'xsd:int','courseID'=>'xsd:int'),array('return' => 'tns:grades_array_php'),'urn:server','urn:server#getGrades');
-	$server->register("getCourseInfo",array('courseID'=>'xsd:int'),array('return' => 'tns:courses_array_php'),'urn:server','urn:server#getGrades');
+	$server->register("getCourseInfo",array('courseID'=>'xsd:int'),array('return' => 'tns:courses_array_php'),'urn:server','urn:server#getCourseInfo');
+	$server->register("getEnlistedCourses",array('userID'=>'xsd:int'),array('return' => 'tns:courses_array_php'),'urn:server','urn:server#getEnlistedCourses');
+	$server->register("getClassList",array(''),array('return' => 'tns:courses_array_php'),'urn:server','urn:server#getClassList');
+	$server->register("getFacultySchedule",array('userID'=>'xsd:int'),array('return' => 'tns:faculty_schedules_array_php'),'urn:server','urn:server#getFacultySchedule');
+	$server->register("getRoomList",array(''),array('return' => 'tns:courses_array_php'),'urn:server','urn:server#getRoomList');
+	
 	
 	$server->register("setInfo", array('username' => 'xsd:string', 'type' => 'xsd:string', 'lastname' => 'xsd:string', 'firstname' => 'xsd:string', 'email' => 'xsd:string', 'sex' => 'xsd:string', 'address' => 'xsd:string', 'contact' => 'xsd:string', 'department'=>'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setInfo');
 	$server->register("setStudentInfo", array('username' => 'xsd:string', 'bracket' => 'xsd:string', 'student_number' => 'xsd:string', 'dorm' => 'xsd:boolean'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#setStudentInfo');
@@ -406,7 +417,7 @@
 	$server->register("createAnnouncement", array('username' => 'xsd:string', 'level' => 'xsd:int', 'title' => 'xsd:string', 'content' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#createAnnouncement');
 	$server->register("createCourse", array('title' => 'xsd:string', 'room' => 'xsd:string', 'username' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#createCourse');
 	$server->register("approveAccount", array('username_client' => 'xsd:string', 'username_approve' => 'xsd:string', 'type_client' => 'xsd:string'), array('return' => 'xsd:boolean'), 'urn:server', 'urn:server#approveAccount');
-	
+	$server->register("enistCourse",array('userID'=>'xsd:int','courseID'=>'xsd:int'),array('return' => 'xsd:boolean'),'urn:server','urn:server#enlistCourse');
 	
 	$HTTP_RAW_POST_DATA = isset($HTTP_RAW_POST_DATA)? $HTTP_RAW_POST_DATA : '';
 	$server->service(file_get_contents("php://input"));
