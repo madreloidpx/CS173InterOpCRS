@@ -64,10 +64,10 @@
 		}
 		return $solutions;
 	}
-	#what
-	function getAnnouncement($symbol){
+
+	function getAnnouncement($level){
 		$conn=mysqli_connect('localhost','root','');
-		$query = "SELECT * from students.students WHERE firstname='Hitsugi'";
+		$query = "SELECT lastname, firstname, title, content, date_created from faculty_and_admin.announcements JOIN faculty_and_admin.staff ON faculty_and_admin.announcements.author_id WHERE faculty_and_admin.announcements.announcement_level='$level'";
 		$result = mysqli_query($conn,$query);
 		$solutions = array();
 		while($row = mysqli_fetch_assoc($result)) {
@@ -89,7 +89,7 @@
 	
 	function getCourseInfo($courseID){
 		$conn=mysqli_connect('localhost','root','');
-		$query = "SELECT title, room, units, academic_year, sem from courses.courses WHERE courses.courses.id='$courseID'";
+		$query = "SELECT title, room, units, academic_year, sem, slots, slots_taken from courses.courses WHERE courses.courses.id='$courseID'";
 		$result = mysqli_query($conn,$query);
 		$solutions = array();
 		while($row = mysqli_fetch_assoc($result)) {
@@ -98,13 +98,49 @@
 		return $solutions;
 	}
 	
-	function getEnlistedCourses(){}
+	function getEnlistedCourses($userID){
+		$conn=mysqli_connect('localhost','root','');
+		$query = "SELECT title, room, units, academic_year, sem, slots, slots_taken from courses.courses JOIN courses.course_student ON courses.courses.id=courses.course_student.course_id JOIN students.students ON students.students.id=courses.course_student.student_id WHERE students.students.id='$userID'";
+		$result = mysqli_query($conn,$query);
+		$solutions = array();
+		while($row = mysqli_fetch_assoc($result)) {
+		  $solutions[] = $row;
+		}
+		return $solutions;
+	}
 	
-	function getClassList(){}
+	function getClassList(){
+		$conn=mysqli_connect('localhost','root','');
+		$query = "SELECT title, room, units, academic_year, sem from courses.courses WHERE courses.courses.id='$courseID'";
+		$result = mysqli_query($conn,$query);
+		$solutions = array();
+		while($row = mysqli_fetch_assoc($result)) {
+		  $solutions[] = $row;
+		}
+		return $solutions;	
+	}
 	
-	function getFacultySchedule(){}
+	function getFacultySchedule(){
+		$conn=mysqli_connect('localhost','root','');
+		$query = "SELECT title, room, units, academic_year, sem from courses.courses WHERE courses.courses.id='$courseID'";
+		$result = mysqli_query($conn,$query);
+		$solutions = array();
+		while($row = mysqli_fetch_assoc($result)) {
+		  $solutions[] = $row;
+		}
+		return $solutions;	
+	}
 	
-	function getRoomList(){}
+	function getRoomList(){
+		$conn=mysqli_connect('localhost','root','');
+		$query = "SELECT title, room, units, academic_year, sem from courses.courses WHERE courses.courses.id='$courseID'";
+		$result = mysqli_query($conn,$query);
+		$solutions = array();
+		while($row = mysqli_fetch_assoc($result)) {
+		  $solutions[] = $row;
+		}
+		return $solutions;
+	}
 	
 	function setInfo($username, $type, $lastname, $firstname, $email, $sex, $address, $contact, $department){
 		$conn = mysql_pconnect("localhost", "root", "");
@@ -310,7 +346,9 @@
 		return FALSE;
 	}
 	
-	function enlistCourse(){}
+	function enlistCourse(){
+	
+	}
 
 	require('lib/nusoap.php');
 	$server = new soap_server();
@@ -323,7 +361,7 @@
 	$server->wsdl->addComplexType('grades_array_php','complexType','array','all','SOAP-ENC:Array',array(),array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:grades_array[]')),'tns:grades_array');
 
 
-	$server->wsdl->addComplexType('announcements_array','complexType','struct','all','',array('id'=>array('name'=>'id','type'=>'xsd:int'),'author_id'=>array('name'=>'author_id','type'=>'xsd:int'),'title'=>array('name'=>'title','type'=>'xsd:string'),'announcement_level'=>array('name'=>'announcement_level','type'=>'xsd:unsignedByte'),'content'=>array('name'=>'content','type'=>'xsd:string'),'date_created'=>array('name'=>'date_created','type'=>'xsd:date')));
+	$server->wsdl->addComplexType('announcements_array','complexType','struct','all','',array('id'=>array('name'=>'id','type'=>'xsd:int'),'author_id'=>array('name'=>'author_id','type'=>'xsd:int'),'title'=>array('name'=>'title','type'=>'xsd:string'),'announcement_level'=>array('name'=>'announcement_level','type'=>'xsd:unsignedByte'),'content'=>array('name'=>'content','type'=>'xsd:string'),'date_created'=>array('name'=>'date_created','type'=>'xsd:date'),'lastname'=>array('name'=>'lastname','type'=>'xsd:string'), 'firstname'=>array('name'=>'firstname','type'=>'xsd:string')));
 	$server->wsdl->addComplexType('announcements_array_php','complexType','array','all','SOAP-ENC:Array',array(),array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'tns:announcements_array[]')),'tns:announcements_array');
 	
 	$server->wsdl->addComplexType('staff_array','complexType','struct','all','',array('id'=>array('name'=>'id','type'=>'xsd:int'),'username'=>array('name'=>'username','type'=>'xsd:string'),'password'=>array('name'=>'password','type'=>'xsd:string'),'lastname'=>array('name'=>'lastname','type'=>'xsd:string'),'firstname'=>array('name'=>'firstname','type'=>'xsd:string'),'email'=>array('name'=>'email','type'=>'xsd:string'),'sex'=>array('name'=>'sex','type'=>'xsd:string'),'address'=>array('name'=>'address','type'=>'xsd:string'),'contact'=>array('name'=>'contact','type'=>'xsd:int'),'department'=>array('name'=>'department','type'=>'xsd:string'),'position_level'=>array('name'=>'position_level','type'=>'xsd:unsignedByte'),'approval_status'=>array('name'=>'approval_status','type'=>'xsd:unsignedByte'),'department'=>array('name'=>'department','type'=>'xsd:string')));
