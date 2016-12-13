@@ -143,183 +143,123 @@
 	}
 	
 	function setInfo($username, $type, $lastname, $firstname, $email, $sex, $address, $contact, $department){
-		$conn = mysql_pconnect("localhost", "root", "");
+		$conn = mysqli_connect("localhost", "root", "");
 		switch($type){
 			case 'student':
-				$query = "UPDATE students SET lastname='$lastname', firstname='$firstname', email='$email', sex='$sex', address='$address', contact='$contact', department='$department' WHERE username='$username'";
+				$query = "UPDATE students.students SET lastname='$lastname', firstname='$firstname', email='$email', sex='$sex', address='$address', contact='$contact', department='$department' WHERE username='$username'";
 			break;
 			case 'staff':
-				$query = "UPDATE staff SET lastname='$lastname', firstname='$firstname', email='$email', sex='$sex', address='$address', contact='$contact', department='$department' WHERE username='$username'";
+				$query = "UPDATE faculty_and_admin.staff SET lastname='$lastname', firstname='$firstname', email='$email', sex='$sex', address='$address', contact='$contact', department='$department' WHERE username='$username'";
 			break;
 			default:
 				$query=NULL;
 			break;
 		}
-		if($conn){
-			if(mysql_select_db("crs", $conn)){
-				mysql_query($query);
-				return TRUE;
-			}
-		}
-		return FALSE;
+		$result = mysqli_query($conn,$query);
+		return $result;
 	}
 	
 	function setStudentInfo($username, $bracket, $student_number, $dorm){
-		$conn = mysql_pconnect("localhost", "root", "");
-		$query = "UPDATE students SET bracket='$bracket', student_number='$student_number', dorm='$dorm' WHERE username='$username'";
-		if($conn){
-			if(mysql_select_db("crs", $conn)){
-				mysql_query($query);
-				return TRUE;
-			}
-		}
-		return FALSE;
+		$conn = mysqli_connect("localhost", "root", "");
+		$query = "UPDATE students.students SET bracket='$bracket', student_number='$student_number', dorm='$dorm' WHERE username='$username'";
+		$result = mysqli_query($conn,$query);
+		return $result;
 	}
 	
 	function setAcademicStatus($username){
-		$conn = mysql_pconnect("localhost", "root", "");
-		$query = "UPDATE students SET academic_status='$academic_status' WHERE username='$username'";
-		if($conn){
-			if(mysql_select_db("crs", $conn)){
-				mysql_query($query);
-				return TRUE;
-			}
-		}
-		return FALSE;
+		$conn = mysqli_connect("localhost", "root", "");
+		$query = "UPDATE students.students SET academic_status='$academic_status' WHERE username='$username'";
+		$result = mysqli_query($conn,$query);
+		return $result;
 	}
 	
 	function setEnlistmentStatus($username){
-		$conn = mysql_pconnect("localhost", "root", "");
-		$query = "UPDATE students SET enlistment_status='$enlistment_status' WHERE username='$username'";
-		if($conn){
-			if(mysql_select_db("crs", $conn)){
-				mysql_query($query);
-				return TRUE;
-			}
-		}
-		return FALSE;
+		$conn = mysqli_connect("localhost", "root", "");
+		$query = "UPDATE students.students SET enlistment_status='$enlistment_status' WHERE username='$username'";
+		$result = mysqli_query($conn,$query);
+		return $result;
 	}
 	
 	function setGrades($course, $username, $status, $sem){
-		$conn = mysql_pconnect("localhost", "root", "");
-		$query = "INSERT INTO grades(student_id, course_id, status, semester) VALUES ( ( SELECT id from students where username='$username'), ( SELECT id from courses where title='$course'), '$status', '$sem')";
-		if($conn){
-			if(mysql_select_db("crs", $conn)){
-				mysql_query($query);
-				return TRUE;
-			}
-		}
-		return FALSE;
+		$conn = mysqli_connect("localhost", "root", "");
+		$query = "INSERT INTO students.grades(student_id, course_id, status, semester) VALUES ( ( SELECT id from students where username='$username'), ( SELECT id from courses where title='$course'), '$status', '$sem')";
+		$result = mysqli_query($conn,$query);
+		return $result;
 	}
 	
 	function setAdminLevel($username, $position_level){
-		$conn = mysql_pconnect("localhost", "root", "");
-		$query = "UPDATE staff SET position_level='$position_level' WHERE username='$username'";
-		if($conn){
-			if(mysql_select_db("crs", $conn)){
-				mysql_query($query);
-				return TRUE;
-			}
-		}
-		return FALSE;
+		$conn = mysqli_connect("localhost", "root", "");
+		$query = "UPDATE faculty_and_admin.staff SET position_level='$position_level' WHERE username='$username'";
+		$result = mysqli_query($conn,$query);
+		return $result;
 	}
 	
 	function deleteAnnouncement($announcement_id){
-		$conn = mysql_pconnect("localhost", "root", "");
-		$query = "DELETE FROM announcements WHERE id='$announcement_id'";
-		if($conn){
-			if(mysql_select_db("crs", $conn)){
-				mysql_query($query);
-				return TRUE;
-			}
-		}
-		return FALSE;
+		$conn = mysqli_connect("localhost", "root", "");
+		$query = "DELETE FROM faculty_and_admin.announcements WHERE id='$announcement_id'";
+		$result = mysqli_query($conn,$query);
+		return $result;
 	}
 	
 	function deleteCourse($course_id){
-		$conn = mysql_pconnect("localhost", "root", "");
-		$query = "DELETE FROM courses WHERE id='$course_id'";
-		if($conn){
-			if(mysql_select_db("crs", $conn)){
-				mysql_query($query);
-				return TRUE;
-			}
-		}
-		return FALSE;
+		$conn = mysqli_connect("localhost", "root", "");
+		$query = "DELETE FROM courses.courses WHERE id='$course_id'";
+		$result = mysqli_query($conn,$query);
+		return $result;
 	}
 	
 	function newUser($username, $password, $type){
-		$conn = mysql_pconnect("localhost", "root", "");
+		$conn = mysqli_connect("localhost", "root", "");
 		switch($type){
 			case "student":
-				$query = "INSERT INTO students(username, password, lastname, firstname, email, sex, address, contact, academic_status, bracket, student_number, enrollment_status, approval_status) VALUES ('$username', '$password', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, 0)";
+				$query = "INSERT INTO students.students(username, password, lastname, firstname, email, sex, address, contact, academic_status, bracket, student_number, enrollment_status, approval_status) VALUES ('$username', '$password', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, 0)";
 			break;
 			case "staff":
-				$query = "INSERT INTO staff(username, password, lastname, firstname, email, sex, address, contact, position_level, approval_status) VALUES  ('$username', '$password', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0)";
+				$query = "INSERT INTO faculty_and_admin.staff(username, password, lastname, firstname, email, sex, address, contact, position_level, approval_status) VALUES  ('$username', '$password', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0)";
 			break;
 			default:
 				$query=NULL;
 			break;
 		}
-		if($conn){
-			if(mysql_select_db("crs", $conn)){
-				mysql_query($query);
-				return TRUE;
-			}
-		}
-		return FALSE;
+		$result = mysqli_query($conn,$query);
+		return $result;
 	}
 	
 	function login($username, $password, $type){
-		$conn = mysql_pconnect("localhost", "root", "");
+		$conn = mysqli_connect("localhost", "root", "");
 		switch($type){
 			case "student":
-				$query = "SELECT * FROM students where username='$username' AND password='$password'";
+				$query = "SELECT * FROM students.students where username='$username' AND password='$password'";
 			break;
 			case "staff":
-				$query = "SELECT * FROM staff where username='$username' AND password='$password'";
+				$query = "SELECT * FROM faculty_and_admin.staff where username='$username' AND password='$password'";
 			break;
 		}
-		if($conn){
-			if(mysql_select_db("crs", $conn)){
-				$result = mysql_query($query);
-				$count = mysql_num_rows($result);
-				return $count;
-			}
-		}
-		return FALSE;
+		$result = mysqli_query($conn,$query);
+		$count=mysqli_num_rows($result);
+		return $count;
 	}
 	
 	function createAnnouncement($username, $level, $title, $content){
-		$conn = mysql_pconnect("localhost", "root", "");
-		$query = "INSERT INTO announcements(author_id, title, announcement_level, content, date_created) VALUES (( SELECT id FROM staff where username='sensei' ), '$title', '$level', '$content', CURRENT_TIMESTAMP)";
-		if($conn){
-			if(mysql_select_db("crs", $conn)){
-				mysql_query($query);
-				return TRUE;
-			}
-		}
-		return FALSE;
+		$conn = mysqli_connect("localhost", "root", "");
+		$query = "INSERT INTO faculty_and_admin.announcements(author_id, title, announcement_level, content, date_created) VALUES (( SELECT id FROM staff where username='sensei' ), '$title', '$level', '$content', CURRENT_TIMESTAMP)";
+		$result = mysqli_query($conn,$query);
+		return $result;
 	}
 	
 	function createCourse($title, $room, $username){
-		$conn = mysql_pconnect("localhost", "root", "");
-		$query = "INSERT INTO courses(title, room, faculty_id) VALUES ('$title', '$room', ( SELECT id from staff where username='$username' ) )";
-		if($conn){
-			if(mysql_select_db("crs", $conn)){
-				mysql_query($query);
-				return TRUE;
-			}
-		}
-		return FALSE;
+		$conn = mysqli_connect("localhost", "root", "");
+		$query = "INSERT INTO courses.courses(title, room, faculty_id) VALUES ('$title', '$room', ( SELECT id from staff where username='$username' ) )";
+		$result = mysqli_query($conn,$query);
+		return $result;
 	}
 	
 	function approveAccount($username_client, $username_approve, $type_approve){
-		$conn = mysql_pconnect("localhost", "root", "");
+		$conn = mysqli_connect("localhost", "root", "");
 		if($type_approve == 'student'){
-			$query = "UPDATE students SET approval_status=TRUE WHERE username='$username_approve'";
+			$query = "UPDATE students.students SET approval_status=TRUE WHERE username='$username_approve'";
 		}else if($type_approve == 'staff'){
-			$getLevelApprove = "SELECT position_level from staff where username='$username_approve'";
+			$getLevelApprove = "SELECT position_level from faculty_and_admin.staff where username='$username_approve'";
 			$approveLevel = mysqli_query($conn, $getLevelApprove);
 			$approveLevelSet = array();
 			while($row = mysqli_fetch_assoc($approveLevel)){
@@ -337,13 +277,8 @@
 				$query = "";
 			}
 		}
-		if($conn){
-			if(mysql_select_db("crs", $conn)){
-				mysql_query($query);
-				return TRUE;
-			}
-		}
-		return FALSE;
+		$result = mysqli_query($conn,$query);
+		return $result;
 	}
 	
 	function enlistCourse($userID, $courseID){
