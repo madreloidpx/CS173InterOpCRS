@@ -5,6 +5,8 @@ CREATE TABLE courses(
 	units INT,
 	academic_year INT,
 	sem INT,
+	slots INT,
+	slots_taken INT
 	PRIMARY KEY(id)
 );
 
@@ -12,8 +14,6 @@ CREATE TABLE course_student(
 	id INT AUTO_INCREMENT,
 	course_id INT,
 	student_id INT,
-	slots INT,
-	slots_taken INT,
 	student_enrolled BOOLEAN,
 	PRIMARY KEY(id),
 	FOREIGN KEY(course_id)
