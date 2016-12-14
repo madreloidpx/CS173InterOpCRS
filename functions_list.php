@@ -73,13 +73,13 @@
 		return $return;
 	}
 	
-	function setAcademicStatus($username){
-		$return = $c->call('setAcademicStatus', array('username' => $username));
+	function setAcademicStatus($username, $academic_status){
+		$return = $c->call('setAcademicStatus', array('username' => $username, 'academic_status' => $academic_status));
 		return $return;
 	}
 	
-	function setEnlistmentStatus($username){
-		$return = $c->call('setEnlistmentStatus', array('username' => $username));
+	function setEnlistmentStatus($username, $enlistment_status){
+		$return = $c->call('setEnlistmentStatus', array('username' => $username, 'enlistment_status' => $enlistment_status));
 		return $return;
 	}
 	

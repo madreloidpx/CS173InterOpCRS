@@ -166,14 +166,14 @@
 		return $result;
 	}
 	
-	function setAcademicStatus($username){
+	function setAcademicStatus($username, $academic_status){
 		$conn = mysqli_connect("localhost", "root", "");
 		$query = "UPDATE students.students SET academic_status='$academic_status' WHERE username='$username'";
 		$result = mysqli_query($conn,$query);
 		return $result;
 	}
 	
-	function setEnlistmentStatus($username){
+	function setEnlistmentStatus($username, $enlistment_status){
 		$conn = mysqli_connect("localhost", "root", "");
 		$query = "UPDATE students.students SET enlistment_status='$enlistment_status' WHERE username='$username'";
 		$result = mysqli_query($conn,$query);
